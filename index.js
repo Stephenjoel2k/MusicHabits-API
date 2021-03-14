@@ -1,8 +1,8 @@
 const express = require('express')
 const session = require("express-session")
 const app = express()
-const auth = require('./Routes/auth.js')
-
+const auth = require('./Routes/auth')
+const user = require('./Routes/user')
 
 //Middleware
 app.use(express.json())
@@ -19,9 +19,9 @@ app.use(session({
   }
 }))
 
-
 //Routes
 app.use('/auth', auth)
+app.use('/user', user);
 
 app.get('/', async (req, res) => {
   const access_token = await req.query.access_token
@@ -31,7 +31,7 @@ app.get('/', async (req, res) => {
   else{
     req.session.name = "username"
     req.session.secret = access_token
-    res.send(req.session.secret);
+    res.redirect('/user');
   }
 })
 
