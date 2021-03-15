@@ -1,5 +1,7 @@
 # YourMusicHabit
 
+link: https://yourmusichabit.herokuapp.com/
+
 Keeps track of your music history from the moment you register and provide you with interesting insights.
 
 ## Current Status
@@ -7,9 +9,11 @@ Keeps track of your music history from the moment you register and provide you w
 1. Calls the SpotifyAPI and successfully authenticates a user. 
 2. Fetches and updates the user's recently played catalogue when user logins in.
 3. User can view their top artists/tracks
-4.
-5. ( Upcoming ) Automatically calls the user's recently played every hour to update it.
 
+## Upcoming 
+1. ( Upcoming ) Add refresh tokens to automatically call the user's recently played every hour to update it.
+2. Add Data Visualization/Charts on Demand.
+3. Add the feature to create groups.
 
 ## Sprints
 
