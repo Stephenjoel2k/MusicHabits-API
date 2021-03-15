@@ -35,7 +35,7 @@ app.use('/user', user);
 app.get('/', async (req, res) => {
   const access_token = await req.query.access_token
   if(access_token == null){
-    res.render("Landing");
+    res.render(path.resolve("./Views/Landing"));
   }
   else{
     req.session.secret = access_token
