@@ -57,7 +57,9 @@ router.get('/recently-played', async (req, res) => {
         item.track.artists.forEach(artist => artists.push({ "artist_id": artist.id , "artist_name" : artist.name}));
         tracks.push({"played_at": new Date(moment(item.played_at).utc()), "artists": artists, "track_id" : item.track.id, "track_name": item.track.name, "popularity": item.track.popularity});
     })
-    await insert_recently_played(user_id, tracks);
+    if(user_id != 'abc'){
+      await insert_recently_played(user_id, tracks);
+    }
     res.send(tracks);
 })
 
