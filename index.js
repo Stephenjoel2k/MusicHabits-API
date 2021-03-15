@@ -3,6 +3,7 @@ const session = require("express-session")
 const app = express()
 const ejs = require('ejs');
 const path = require('path');
+require('dotenv').config();
 
 //Import Routes
 const auth = require('./Routes/auth')
@@ -43,7 +44,7 @@ app.get('/', async (req, res) => {
 })
 
 //Hosting PORT
-const port = 3000
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Listening on port ${port}.`)
 })

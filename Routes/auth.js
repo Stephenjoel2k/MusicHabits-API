@@ -3,7 +3,7 @@ const router =  express.Router()
 const { getCode, getToken } = require('../Models/auth.js')
 
 // The login redirection for the callback (Spotify Oauth) (add process.env.REDIRECT_URI to heroku when hosted)
-const redirect_uri = 'http://localhost:3000/auth/callback/'
+const redirect_uri = REDIRECT_URI
 
 /**
  * When pressed the login button or
