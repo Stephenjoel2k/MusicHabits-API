@@ -1,10 +1,17 @@
 const express = require('express')
 const session = require("express-session")
 const app = express()
+const ejs = require('ejs');
+const path = require('path');
+
+//Import Routes
 const auth = require('./Routes/auth')
 const user = require('./Routes/user')
 
 //Middleware
+app.use(express.static(__dirname + "/Views"));
+app.set('view engine', 'ejs');
+
 app.use(express.json())
 app.use(session({
   name: 'abc',
@@ -15,21 +22,21 @@ app.use(session({
     cookie: {
       secure: false,
       maxAge: 2160000000,
-      httpOnly: false
+      httpOnly: true,
+      sameSite: "lax",
   }
 }))
 
 //Routes
-app.use('/auth', auth)
+app.use('/auth', auth);
 app.use('/user', user);
 
 app.get('/', async (req, res) => {
   const access_token = await req.query.access_token
   if(access_token == null){
-    res.redirect("/auth/login")
+    res.render("Landing");
   }
   else{
-    req.session.name = "username"
     req.session.secret = access_token
     res.redirect('/user');
   }

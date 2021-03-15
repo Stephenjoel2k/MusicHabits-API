@@ -9,12 +9,15 @@ const { insert_recently_played } = require('../Models/user.js');
 router.get('/', async (req, res) => {
   const access_token = await req.session.secret
   const user = await spotify.getUserProfile(access_token)
-  req.session.user_id = await user.id
-  req.session.name = await user.display_name
-  res.redirect('/user/' + req.session.user_id + '/recently-played')
+  const user_id = await user.id
+  const name = await user.display_name
+  req.session.name = name;
+  req.session.user_id = user_id;
+  res.render("User", {"user_data": {name, user_id}});
+ // return res.redirect('/user/' + req.session.user_id + '/recently-played')
 })
 
-router.get('/:id/top-artists', async (req, res) => {
+router.get('/top-artists', async (req, res) => {
   const access_token = await req.session.secret
   const topArtists = await spotify.getUserTop("artists", "long_term", 50, 0, access_token)
   const artists = [];
@@ -25,7 +28,7 @@ router.get('/:id/top-artists', async (req, res) => {
   res.send(artists)
 })
 
-router.get('/:id/top-tracks', async (req, res) => {
+router.get('/top-tracks', async (req, res) => {
   const access_token = await req.session.secret
   const topTracks = await spotify.getUserTop("tracks", "long_term", 50, 0, access_token)
   const tracks = []
@@ -41,9 +44,9 @@ router.get('/:id/top-tracks', async (req, res) => {
 /**
  * Logic: 1. We push all songs and prevent duplicate by keeping the played_at key unique 
  */
-router.get('/:id/recently-played', async (req, res) => {
+router.get('/recently-played', async (req, res) => {
     const access_token = await req.session.secret
-    const username = await req.session.user_id
+    const user_id = await req.session.user_id
     const history = await spotify.recentlyPlayed(access_token)
 
     const tracks = [];
@@ -54,7 +57,7 @@ router.get('/:id/recently-played', async (req, res) => {
         item.track.artists.forEach(artist => artists.push({ "artist_id": artist.id , "artist_name" : artist.name}));
         tracks.push({"played_at": new Date(moment(item.played_at).utc()), "artists": artists, "track_id" : item.track.id, "track_name": item.track.name, "popularity": item.track.popularity});
     })
-    await insert_recently_played(username, tracks);
+    await insert_recently_played(user_id, tracks);
     res.send(tracks);
 })
 
