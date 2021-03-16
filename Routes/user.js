@@ -1,12 +1,16 @@
 const express = require('express')
-const mongodb = require('mongodb')
-const moment = require('moment');
 const path = require('path');
+
 const router = express.Router()
+
 const { spotify } = require('../Models/spotifyApi.js')
-const { insert_recently_played } = require('../Models/user.js');
+const { getTopArtists, getTopTracks, getRecentlyPlayed } = require('../Models/user.js');
 
 
+/**
+ * Can be considered User "dashboard"
+ * This is where the user will land once they login
+ */
 router.get('/', async (req, res) => {
   const access_token = await req.session.secret
   const user = await spotify.getUserProfile(access_token)
@@ -17,50 +21,29 @@ router.get('/', async (req, res) => {
   res.render(path.resolve("./Views/User"), {"user_data": {name, user_id}});
 })
 
+/**
+ * Get Top Artists of the user based on the term Specified
+ */
 router.get('/top-artists', async (req, res) => {
-  const access_token = await req.session.secret
-  const topArtists = await spotify.getUserTop("artists", "long_term", 50, 0, access_token)
-  const artists = [];
-  let i = 1;
-  topArtists.items.forEach(artist => {
-    artists.push(`${i++} : ${artist.name}`);
-  })
-  res.send(artists)
+  const artists = await getTopArtists(req);
+  res.send(artists);
 })
 
+/**
+ * Get Top Tracks of the user based on the term Specified
+ */
 router.get('/top-tracks', async (req, res) => {
-  const access_token = await req.session.secret
-  const topTracks = await spotify.getUserTop("tracks", "long_term", 50, 0, access_token)
-  const tracks = []
-  let i = 1;
-  topTracks.items.forEach(track => {
-    tracks.push(`${i++} : ${track.name}`)
-  })
+  const tracks = await getTopTracks(req);
   res.send(tracks)
 })
-
 
 
 /**
  * Logic: 1. We push all songs and prevent duplicate by keeping the played_at key unique 
  */
 router.get('/recently-played', async (req, res) => {
-    const access_token = await req.session.secret
-    const user_id = await req.session.user_id
-    const history = await spotify.recentlyPlayed(access_token)
-
-    const tracks = [];
-
-    //Loop through each item in the recently_played items array (currently reversed)
-    history.items.forEach(item => {
-        const artists = [];
-        item.track.artists.forEach(artist => artists.push({ "artist_id": artist.id , "artist_name" : artist.name}));
-        tracks.push({"played_at": new Date(moment(item.played_at).utc()), "artists": artists, "track_id" : item.track.id, "track_name": item.track.name, "popularity": item.track.popularity});
-    })
-    if(user_id != 'abc'){
-      await insert_recently_played(user_id, tracks);
-    }
-    res.send(tracks);
+    const recent = await getRecentlyPlayed(req);
+    res.send(recent);
 })
 
 
