@@ -26,7 +26,10 @@ Keeps track of your music history from the moment you register and provide you w
 
 ## Sprints
 
-1. 5:33:00hrs - Setup backend
+1. 5:30:00hrs - Setup backend
 2. 4:30:00hrs - Creating visual charts on Mongo/building the UI
 3. 1:00:00hr - Deployed to Heroku
 4. 2:00:00hr - Fixed Favicon and dropdown menu
+5. 4:00:00hr - Getting Refresh Tokens and Cron job in local server
+
+Total: 17hrs
