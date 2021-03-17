@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
  */
 router.get('/top-artists', async (req, res) => {
   const artists = await getTopArtists(req);
-  res.send(artists);
+  res.render(path.resolve("./Views/TopList"), {"items": artists});
 })
 
 /**
@@ -34,7 +34,7 @@ router.get('/top-artists', async (req, res) => {
  */
 router.get('/top-tracks', async (req, res) => {
   const tracks = await getTopTracks(req);
-  res.send(tracks)
+  res.render(path.resolve("./Views/TopList"), {"items": tracks});
 })
 
 
