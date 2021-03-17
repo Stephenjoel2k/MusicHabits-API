@@ -16,8 +16,6 @@ const getUserProfile = async (access_token) => {
   return response.data
 }
 
-
-
 /**
  * 
  * @param {string} type "artists" or "tracks" 
@@ -28,6 +26,10 @@ const getUserProfile = async (access_token) => {
  * @returns //Top artists or tracks in json depending on the time_range, limit and offset.
  */
 const getUserTop = async(type, time_range, limit, offset, access_token) => {
+  //default the time_range to long_term if unspecified (error handling for direct url search)
+  if(time_range != "long_term" || time_range != "medium_term" || time_range != "short_term"){
+    time_range = "long_term";
+  }
   const url = "https://api.spotify.com/v1/me/top/" + type + "?time_range=" + time_range + "&limit=" + limit + "&offset=" + offset
   const response = await axios.get(url, {
     headers: {
@@ -64,6 +66,7 @@ const getUserDevices = async(access_token) => {
  * @param {string} access_token 
  * @param {string} device_id 
  * @param {string} track_id 
+ * Adds the specified track to the specified device id
  */
 const addToQueue = async(access_token, device_id, track_id) => {
   const url = "https://api.spotify.com/v1/me/player/add-to-queue?uri="+ track_id  + "&device_id=" + device_id

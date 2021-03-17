@@ -43,6 +43,21 @@ app.get('/', async (req, res) => {
   }
 })
 
+/**
+ * If a user goes a non existing link
+ * Reroute them based on the status of their session.
+ * Route them to dashboard if they're logged on 
+ * Route them to the Landing page if they arent'
+ */
+app.get('*', async(req, res) => {
+  const access_token = await req.session.secret;
+  if(access_token == undefined){
+    res.redirect(process.env.MAIN_URI);
+  } else{
+    res.redirect('/user');    //store this link as dashboard_URI as an ENV. So, you can direct the user to the main page if login.
+  }
+})
+
 //Hosting PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

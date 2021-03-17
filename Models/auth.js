@@ -8,11 +8,10 @@ const {spotify} = require('./spotifyApi')
 //set refresh token
 const {store_refresh_token, store_recently_played, getRecentlyPlayed} = require('./user');
 
-  /**
-   * 
-   * @param {*} res 
-   * @param {*} redirect_uri 
-   */
+/**
+ * When pressed the login button or
+ * When the user wants to view the main features of the application
+*/
   const getCode = (res, redirect_uri) => {
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -23,12 +22,10 @@ const {store_refresh_token, store_recently_played, getRecentlyPlayed} = require(
     }))
   }
 
-  /**
-   * 
-   * @param {*} res 
-   * @param {*} code 
-   * @param {*} redirect_uri 
-   */
+/**
+ * When logining in, this is automatically called
+ * by the function to receive the token from Spotify.
+*/
   const getToken = (res, code, redirect_uri) => {
     let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
@@ -46,13 +43,12 @@ const {store_refresh_token, store_recently_played, getRecentlyPlayed} = require(
     }
     request.post(authOptions, async function(error, response, body) {
       var access_token = await body.access_token
-      await store_refresh_token(body);
+      var refresh_token = await body.refresh_token
+      await store_refresh_token(access_token, refresh_token);
       let uri = process.env.MAIN_URI        //localhost or heroku
       res.redirect(uri + '?access_token=' + access_token)
     })
   }
-
-
 
   //
   /**

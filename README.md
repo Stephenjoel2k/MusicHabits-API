@@ -26,12 +26,7 @@ Keeps track of your music history from the moment you register and provide you w
 1. How mainstream are you? Analyses user's past 50 songs and favorite artists/tracks based on different terms - to provide them information on their genre/mainstreamness. This will get an hollistic view of how popular the artists they listen to are! And look at the trend of their top artists every term.
 
 
-## Sprints
+## POTENTIAL HAZARDS
 
-1. 5:30:00hrs - Setup backend
-2. 4:30:00hrs - Creating visual charts on Mongo/building the UI
-3. 1:00:00hr - Deployed to Heroku
-4. 2:00:00hr - Fixed Favicon and dropdown menu
-5. 4:00:00hr - Getting Refresh Tokens and Cron job in local server
-
-Total: 17hrs
+1. API RATE OVERLOADING -> Haven't handled errors reagarding API rate limiting.
+2. No unit tests implemented

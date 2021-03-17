@@ -55,6 +55,7 @@ var get_all_users = async() => {
     }
 }
 
+
 /**
  * @param {string} user_id 
  * @param {time} earliestSongInList 
@@ -123,12 +124,11 @@ var store_recently_played = async(user_id, tracks) => {
 
 /**
  * 
- * @param {*} req 
- * @returns 
+ * @param {string} access_token 
+ * @param {string} term 
+ * @returns The list of top 50 artists based on the specified term
  */
-var getTopArtists = async(req) => {
-    const access_token = await req.session.secret
-    const term = await req.query.term
+var getTopArtists = async(access_token, term) => {
     const topArtists = await spotify.getUserTop("artists", term, 50, 0, access_token)
     const artists = [];
     let i = 1;
@@ -140,15 +140,15 @@ var getTopArtists = async(req) => {
 
 /**
  * 
- * @param {*} req 
- * @returns 
+ * @param {string} access_token 
+ * @param {string} term 
+ * @returns The list of top 50 tracks based on the specified term
  */
-var getTopTracks = async(req) => {
-    const access_token = await req.session.secret
-    const term = await req.query.term
+var getTopTracks = async(access_token, term) => {
     const topTracks = await spotify.getUserTop("tracks", term, 50, 0, access_token)
     const tracks = []
     let i = 1;
+    //Improve the data pushed to the list
     topTracks.items.forEach(track => {
         tracks.push(`${i++} : ${track.name}`)
     })
@@ -157,8 +157,8 @@ var getTopTracks = async(req) => {
 
 /**
  * 
- * @param {*} access_token 
- * @param {*} user_id 
+ * @param {string} access_token 
+ * @param {string} user_id 
  * @returns 
  */
 var getRecentlyPlayed = async(access_token, user_id) => {
@@ -183,13 +183,14 @@ var getRecentlyPlayed = async(access_token, user_id) => {
 
 /**
  * 
- * @param {*} body 
- * @returns 
+ * Stores the refresh token of the user at authentication
+ * 
+ * @param {string} access_token 
+ * @param {string} refresh_token 
+ * @returns null
  */
 //stores the refresh_token of the current user
-var store_refresh_token = async(body) => {
-    const access_token = await body.access_token;
-    const refresh_token = await body.refresh_token;
+var store_refresh_token = async(access_token, refresh_token) => {
     const user = await spotify.getUserProfile(access_token);
     const user_id = user.id;
 
@@ -215,12 +216,13 @@ var store_refresh_token = async(body) => {
     }
   }
 
+
+
 /**
  * 
- * @param {*} user_id 
- * @returns 
+ * @param {string} user_id 
+ * @returns the refresh_token of a specific user
  */
-//fetches the refresh_token of a specific user
 var get_refresh_token = async(user_id) => {
     const url = process.env.MONGO_URI;
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
