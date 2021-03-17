@@ -27,7 +27,7 @@ const getUserProfile = async (access_token) => {
  */
 const getUserTop = async(type, time_range, limit, offset, access_token) => {
   //default the time_range to long_term if unspecified (error handling for direct url search)
-  if(time_range != "long_term" || time_range != "medium_term" || time_range != "short_term"){
+  if(time_range != "long_term" && time_range != "medium_term" && time_range != "short_term"){
     time_range = "long_term";
   }
   const url = "https://api.spotify.com/v1/me/top/" + type + "?time_range=" + time_range + "&limit=" + limit + "&offset=" + offset

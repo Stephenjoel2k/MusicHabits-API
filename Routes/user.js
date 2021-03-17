@@ -31,10 +31,14 @@ router.get('/', async (req, res) => {
  * Defaults to long_term
  */
 router.get('/top-artists', async (req, res) => {
-  const access_token = req.session.secret;
-  const term = req.query.term;
-  const artists = await getTopArtists(access_token, term);
-  res.render(path.resolve("./Views/TopList"), {"items": artists});
+  try{
+    const access_token = req.session.secret;
+    const term = req.query.term;
+    const artists = await getTopArtists(access_token, term);
+    res.render(path.resolve("./Views/TopList"), {"items": artists});
+  } catch (err){
+    res.redirect('/');
+  }
 })
 
 /**
@@ -42,22 +46,32 @@ router.get('/top-artists', async (req, res) => {
  * Defaults to long_term
  */
 router.get('/top-tracks', async (req, res) => {
-  const access_token = req.session.secret;
-  const term = req.query.term;
-  const tracks = await getTopTracks(access_token, term);
-  res.render(path.resolve("./Views/TopList"), {"items": tracks});
-})
+  try{
+    const access_token = req.session.secret;
+    const term = req.query.term;
+    const tracks = await getTopTracks(access_token, term);
+    res.render(path.resolve("./Views/TopList"), {"items": tracks});
+  } catch (err){
+    res.redirect('/');
+  }
+  })
 
 
 /**
  * Logic: 1. We push all songs and prevent duplicate by keeping the played_at key unique 
  */
 router.get('/recently-played', async (req, res) => {
+  try{
     const access_token = await req.session.secret
     const user_id = await req.session.user_id
     const recent = await getRecentlyPlayed(access_token, user_id);
     res.send(recent);
+  }  catch (err){
+    res.redirect('/');
+  }
 })
+
+
 
 
 module.exports = router
