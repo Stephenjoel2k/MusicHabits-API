@@ -6,7 +6,7 @@ require('dotenv').config()
 const {spotify} = require('./spotifyApi')
 
 //set refresh token
-const {store_refresh_token, store_recently_played, getRecentlyPlayed} = require('./user');
+const {store_refresh_token, store_recently_played, getRecentlyPlayed, get_all_tracks} = require('./user');
 
 /**
  * When pressed the login button or
@@ -85,9 +85,10 @@ const {store_refresh_token, store_recently_played, getRecentlyPlayed} = require(
           //store the recentlyPlayed
           spotify.getUserProfile(access_token).then(user => {
             var user_id = user.id;
+            var name = user.display_name;
             getRecentlyPlayed(access_token, user_id).then(tracks => {
-              store_recently_played(user_id, tracks).then(()=> {
-                console.log("Successfully stored new tracks for " + user_id);
+              store_recently_played(user_id, tracks).then(async()=> {
+                console.log(name + " -> saved songs.")
               })
             })
           });
