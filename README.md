@@ -19,6 +19,7 @@ Keeps track of your music history from the moment you register and provide you w
 3. Add Data Visualization/Charts on Demand.
 4. Add the feature to create groups.
 5. A specific song over time graph. So that a user can see the number of times the user listened to the song/genre overtime.
+6. Your top artists with features like "new entry" and arrows to show the change in rankings of your artists like marbula's.
 
 ## Feature Ideas
 
