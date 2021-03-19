@@ -12,6 +12,14 @@ Keeps track of your music history from the moment you register and provide you w
 4. A drop down menu to choose the top artists/tracks/recent dynamically. (long_term/short_term)
 5. A cron job that updates the db every 2 hours -> (yet to be developed on production env)
 
+
+# Important DB structural change
+
+1. Have a tracks collection with all unique track's metadeta in it. 
+2. Whenever a user listens to a song, store only the track_id and played_at.
+3. Or something along its lines to decrease the space consumption.
+
+
 ## Upcoming 
 
 1. Make the top artists/tracks more visually appealing
