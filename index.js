@@ -1,7 +1,6 @@
 const express = require('express')
 const session = require("express-session")
 const app = express()
-const Cors = require('cors');
 const ejs = require('ejs');
 const path = require('path');
 require('dotenv').config();
@@ -12,7 +11,6 @@ const user = require('./Routes/user')
 
 //Middleware
 app.use(express.static(__dirname + "/Views"));
-app.user(Cors());
 app.set('view engine', 'ejs');
 
 app.use(express.json())
