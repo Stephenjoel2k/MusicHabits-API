@@ -15,7 +15,7 @@ const userRoutes = require('./Routes/user')
 //Middleware
 app.use(express.json())
 app.use('/api/database/update', updateUsersTracks)
-app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use(checkToken);
 app.use('/api/user', userRoutes);
 

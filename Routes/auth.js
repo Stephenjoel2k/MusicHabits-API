@@ -43,7 +43,7 @@ router.get('/callback', function(req, res) {
       }
       request.post(authOptions, async(error, response, body) => {
         var access_token = await body.access_token
-        //store the value in DynamoDB
+        //store the value in DB
         var refresh_token = await body.refresh_token
         let uri = process.env.MAIN_URI        //localhost or heroku
         res.redirect(uri + '?access_token=' + access_token)
