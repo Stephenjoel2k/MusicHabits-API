@@ -10,7 +10,7 @@ const { spotify } = require('../Models/spotify.js')
  * @param {string} user_id 
  * @returns all the tracks linked to the current user 
  */
-var get_all_tracks = async(user_id) => {
+const get_all_tracks = async(user_id) => {
     const url = process.env.MONGO_URI;
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
     const dbName = user_id;
@@ -31,10 +31,37 @@ var get_all_tracks = async(user_id) => {
 }
 
 /**
+ * @param {string} user_id 
+ * @param {date} date 
+ * @returns all the tracks linked to the current user 
+ */
+ const get_tracks_from = async(user_id, date) => {
+    const url = process.env.MONGO_URI;
+    const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+    const dbName = user_id;
+    const collectionName = "recently-played";
+    
+    try{
+        await client.connect();
+        const db = client.db(dbName);
+        const col = db.collection(collectionName);
+        const tracks = [];
+        var from = date;
+        await col.find({played_at: {$gt: from}}).forEach(track => tracks.push(track));
+        return tracks;
+    } catch (err) {
+        console.log(err.stack);
+    } finally {
+        await client.close();
+    }
+}
+
+
+/**
  * 
  * @returns All the User_ids registered/linked to the appplication database
  */
-var get_all_users = async() => {
+const get_all_users = async() => {
     const url = process.env.MONGO_URI;
     const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
     const dbName = "RefreshTokens";
@@ -243,16 +270,19 @@ var get_refresh_token = async(user_id) => {
 }
 
 
+const db =  {   
+    get_recently_played,
+    store_recently_played,
+    get_all_tracks, 
+    get_tracks_from,
+    get_all_users,
+    getTopArtists, 
+    getTopTracks, 
+    getRecentlyPlayed, 
+    store_refresh_token,
+    get_refresh_token
+}
 
-module.exports = {   
-                    get_recently_played,
-                    store_recently_played,
-                    get_all_tracks, 
-                    get_all_users,
-                    getTopArtists, 
-                    getTopTracks, 
-                    getRecentlyPlayed, 
-                    store_refresh_token,
-                    get_refresh_token
-                }
+
+module.exports = {db};
 

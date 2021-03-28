@@ -1,6 +1,11 @@
+/**
+ * This route doesn't interact with the database.
+ * This only calls the spotify API to get basic user info like profile, topArtists, topTracks and recentlyPlayed.
+ */
+
 const express = require('express')
 const router = express.Router()
-const { spotify } = require('../Models/spotify.js')
+const { spotify } = require('../Models/spotify')
 
 /**
  * Fetches user profile
@@ -15,6 +20,7 @@ router.get('/', async (req, res) => {
       data: user
     });
   }catch(err){
+    console.log(err.stack);
     return res.status(401).json({
       success: false,
       message: "Failed to fetch data",
@@ -37,6 +43,7 @@ router.get('/top-artists', async (req, res) => {
       data: artists
     });
   }catch(err){
+    console.log(err.stack);
     return res.status(401).json({
       success: false,
       message: "Failed to fetch data",
@@ -59,6 +66,7 @@ router.get('/top-tracks', async (req, res) => {
       data: tracks
     });
   }catch(err){
+    console.log(err.stack);
     return res.status(401).json({
       success: false,
       message: "Failed to fetch data",
@@ -69,7 +77,7 @@ router.get('/top-tracks', async (req, res) => {
 
 
 /**
- * Logic: 1. We push all songs and prevent duplicate by keeping the played_at key unique 
+ * Get the 50 recently played songs of the user
  */
 router.get('/recently-played', async (req, res) => {
   try{
@@ -81,6 +89,7 @@ router.get('/recently-played', async (req, res) => {
       data: recent
     });
   }catch(err){
+    console.log(err.stack);
     return res.status(401).json({
       success: false,
       message: "Failed to fetch data",

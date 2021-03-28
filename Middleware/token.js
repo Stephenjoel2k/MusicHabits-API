@@ -1,3 +1,11 @@
+/**
+ * Makes sure that the user is accessing the API through with a token
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
+
 const checkToken = (req, res, next) => {
     let token = req.headers["x-access-token"] || req.headers.authorization;
   

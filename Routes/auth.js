@@ -1,7 +1,14 @@
+/**
+ * This route deals with authorization.
+ * This route also saves the refresh token of the user in the DB.
+ */
+
 const express =  require('express')
 const querystring = require('querystring');
 const request = require('request');
 const router =  express.Router()
+
+const { db } = require('../Models/db');
 
 // The login redirection for the callback (Spotify Oauth) (add process.env.REDIRECT_URI to heroku when hosted)
 const redirect_uri = process.env.REDIRECT_URI
@@ -42,9 +49,9 @@ router.get('/callback', function(req, res) {
         json: true
       }
       request.post(authOptions, async(error, response, body) => {
-        var access_token = await body.access_token
-        //store the value in DB
-        var refresh_token = await body.refresh_token
+        var access_token = body.access_token
+        var refresh_token = body.refresh_token
+        await db.putRefreshToken(access_token, refresh_token, true);
         let uri = process.env.MAIN_URI        //localhost or heroku
         res.redirect(uri + '?access_token=' + access_token)
       })
