@@ -10,24 +10,8 @@ Api for the app that keeps track of your music history from the moment you regis
 2. Fetches and updates the user's recently played catalogue when user logins in.
 3. User can view their top artists/tracks
 4. A drop down menu to choose the top artists/tracks/recent dynamically. (long_term/short_term)
-5. A cron job that updates the db every 2 hours -> (yet to be developed on production env)
+5. A cron job that updates the db every 2 hours
 
-
-# Important DB structural change
-
-1. Have a tracks collection with all unique track's metadeta in it. 
-2. Whenever a user listens to a song, store only the track_id and played_at.
-3. Or something along its lines to decrease the space consumption.
-
-
-## Upcoming 
-
-1. Make the top artists/tracks more visually appealing
-~2. Create a prettier dashboard~
-3. Add Data Visualization/Charts on Demand.
-4. Add the feature to create groups.
-5. A specific song over time graph. So that a user can see the number of times the user listened to the song/genre overtime.
-6. Your top artists with features like "new entry" and arrows to show the change in rankings of your artists like marbula's.
 
 ## Feature Ideas
 
@@ -37,11 +21,9 @@ Api for the app that keeps track of your music history from the moment you regis
 
 ## POTENTIAL HAZARDS
 
-1. API RATE OVERLOADING -> Haven't handled errors reagarding API rate limiting.
+1. API RATE OVERLOADING
 2. No unit tests implemented
 
-## Issues
+## ISSUES
 
-1. Fix the updateTracks middleware to make the code more efficient.
-2. Restructure the mongo schema to decrease the number of calls required.
-3. Mongodb restricts the number of database, so restructure the code to make sure users share DB.
+https://github.com/Stephenjoel2k/MusicHabits-API/issues
