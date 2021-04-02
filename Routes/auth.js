@@ -22,7 +22,7 @@ router.get('/login', function(req, res) {
     querystring.stringify({
       response_type: 'code',
       client_id: process.env.CLIENT_ID,
-      scope: 'user-read-private user-read-email user-read-recently-played user-top-read user-read-playback-state user-modify-playback-state user-read-currently-playing',
+      scope: 'user-read-private user-read-email user-read-recently-played user-top-read user-read-playback-state user-modify-playback-state user-read-currently-playing user-library-modify',
       redirect_uri
     }))
 })
