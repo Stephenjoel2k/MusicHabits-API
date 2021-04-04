@@ -41,10 +41,58 @@ const dbRecentTracks = (items) => {
     return dbrecentIds;
 }
 
+const statsTracks = (items) => {
+    const tracks = [];
+    items.forEach(item => {
+        const artists = [];
+        item.artists.forEach(artist => {
+            artists.push({"id": artist.id, 
+                "name" : artist.name, 
+                "followers": artist.followers.total,
+                "genres": artist.genres,
+                "popularity": artist.popularity
+             });
+        })
+        const schema = {
+            "played_at": item.played_at,
+            "album" : {
+                "album_type" : item.album.album_type,
+                "id": item.album.id,
+                "name":item.album.release_date,
+                "total_tracks": 8,
+            },
+            "artists": artists,
+            "duration_ms" : item.duration_ms,
+            "explicit": item.explicit,
+            "name":item.name,
+            "id":item.id,
+            "popularity":item.popularity,
+            "audio_features":{
+                "danceability": item.audio_features.danceability,
+                "energy": item.audio_features.energy,
+                "key":item.audio_features.key,
+                "loudness": item.audio_features.loudness,
+                "mode": item.audio_features.mode,
+                "speechiness": item.audio_features.speechiness,
+                "acousticness": item.audio_features.acousticness,
+                "instrumentalness": item.audio_features.instrumentalness,
+                "liveness": item.audio_features.liveness,
+                "valence": item.audio_features.valence,
+                "tempo" : item.audio_features.tempo,
+                "time_signature": item.audio_features.time_signature
+            }
+        }
+        tracks.push(schema);
+    });
+    return tracks;
+}
+
+
 
 const filter = {
     recentTracks,
     dbRecentTracks,
+    statsTracks
 }
 
 module.exports = {filter}

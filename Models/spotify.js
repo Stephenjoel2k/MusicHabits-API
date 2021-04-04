@@ -82,6 +82,56 @@ const getUserCurrentlyPlaying = async(access_token) => {
 }
 
 
+/**
+ * 
+ * @param {string} access_token 
+ * @returns The Track info
+ */
+ const getSeveralTracks = async(access_token, tracks) => {
+  const trackIds = [];
+  tracks.forEach(track => { trackIds.push(track.t_id)});
+  const url = "https://api.spotify.com/v1/tracks?ids=" + trackIds + "&market=from_token";
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: "Bearer " + access_token
+    }
+  });
+  return response.data.tracks;
+}
+
+
+/**
+ * 
+ * @param {string} access_token 
+ * @returns The Track Audio Features
+ */
+ const getSeveralTracksAudioFeatures = async(access_token, tracks) => {
+  const trackIds = [];
+  tracks.forEach(track => { trackIds.push(track.t_id)});
+  const url = "https://api.spotify.com/v1/audio-features?ids=" + trackIds;
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: "Bearer " + access_token
+    }
+  });
+  return response.data.audio_features;
+}
+
+/**
+ * 
+ * @param {string} access_token 
+ * @returns The Track info
+ */
+ const getSeveralArtists = async(access_token, artistsIds) => {
+  const url = "https://api.spotify.com/v1/artists?ids=" + artistsIds + "&market=from_token";
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: "Bearer " + access_token
+    }
+  });
+  return response.data.artists;
+}
+
 
 
 
@@ -90,7 +140,10 @@ const spotify = {
   getUserTopArtists,
   getUserTopTracks,
   getUserRecentlyPlayed,
-  getUserCurrentlyPlaying
+  getUserCurrentlyPlaying,
+  getSeveralTracks,
+  getSeveralArtists,
+  getSeveralTracksAudioFeatures
 }
 
 module.exports = { spotify }

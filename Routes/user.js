@@ -6,6 +6,7 @@
 const express = require('express')
 const router = express.Router()
 const { spotify } = require('../Models/spotify')
+const { getStats } = require('../Models/stats')
 
 /**
  * Fetches user profile
@@ -98,6 +99,25 @@ router.get('/recently-played', async (req, res) => {
   }
 })
 
+
+router.get('/stats', async (req, res) => {
+  try{
+    const access_token = req.token;
+    const stats = await getStats(access_token);
+    return res.status(200).json({
+      success: true,
+      message: "Data successfully Fetched",
+      data: stats
+    });
+  }catch(err){
+    console.log(err.stack);
+    return res.status(401).json({
+      success: false,
+      message: "Failed to fetch data",
+      data: null
+    });
+  }
+})
 
 
 

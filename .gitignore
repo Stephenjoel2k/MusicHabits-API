@@ -4,3 +4,7 @@ node_modules
 
 #API KEY
 .env
+
+
+#Private Info
+sampleData
