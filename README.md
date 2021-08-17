@@ -23,7 +23,6 @@ Api for the app that keeps track of your music history from the moment you regis
 ## POTENTIAL HAZARDS
 
 1. API RATE OVERLOADING
-2. No unit tests implemented
 
 ## ISSUES
 
